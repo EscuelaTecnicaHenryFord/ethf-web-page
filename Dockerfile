@@ -27,4 +27,7 @@ COPY . .
 RUN cd backend && npm run build
 RUN cd ..
 
+EXPOSE 3000
+EXPOSE 1337
+
 CMD ["npm", "run", "start"]

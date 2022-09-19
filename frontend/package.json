@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "chmod +x ./build_and_run.sh && ./build_and_run.sh",
+    "next_start": "next start",
     "lint": "next lint"
   },
   "dependencies": {

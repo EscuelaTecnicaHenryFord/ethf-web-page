@@ -27,20 +27,11 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Use localhost to internal frontend build
-RUN echo $'\n'127.0.0.1$'\t'cms.henryford.edu.ar >> /etc/hosts
-# Start dev server on background
-RUN cd backend
-RUN screen -d -m -S temporal_cms_server_for_build_frontend npm run develop
+# Add x permission
+RUN chmod +x ./entrypoint.sh
 
-RUN cd ..
-RUN cd frontend
-# Give time to CMS dev server to start
-RUN sleep 20
-RUN npm run build
-# Quit dev server
-RUN screen -X -S temporal_cms_server_for_build_frontend quit
-
+# Build backend
+RUN cd backend && npm run build
 RUN cd ..
 
 CMD ["npm", "run", "start"]

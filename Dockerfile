@@ -8,10 +8,6 @@ ENV DATABASE_FILENAME=./db/data.db
 ENV NEXT_PUBLIC_STRAPI_API_URL=https://cms.henryford.edu.ar
 ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=G-61MY92XHNB
 
-# Prepare things now (I do it to avoid redoing it on all rebuilds)
-RUN apt update -y
-RUN apt install screen -y
-
 # Make subfolders
 RUN mkdir frontend
 RUN mkdir backend

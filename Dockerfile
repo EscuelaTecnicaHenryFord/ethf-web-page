@@ -14,8 +14,8 @@ RUN mkdir backend
 
 # Copy all three packages json
 COPY package*.json ./
-COPY frontend/package*.json ./frontend
-COPY backend/package*.json ./backend
+COPY frontend/package*.json ./frontend/
+COPY backend/package*.json ./backend/
 
 # Install all dependencies
 RUN npm install

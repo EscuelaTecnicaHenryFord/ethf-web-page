@@ -3,7 +3,7 @@ if [[ -d "$FILE" ]]; then
     echo "$FILE exists."
 else
     echo "$FILE don't exist."
-    sleep 5
+    sleep 30
     npm run build
 fi
 cd frontend

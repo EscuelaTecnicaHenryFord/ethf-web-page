@@ -4,7 +4,6 @@ if [[ -d "$FILE" ]]; then
 else
     echo "$FILE don't exist."
     sleep 5
-    echo $'\n'127.0.0.1$'\t'cms.henryford.edu.ar >> /etc/hosts
     npm run build
 fi
 cd frontend

@@ -23,9 +23,6 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Add x permission
-RUN chmod +x ./entrypoint.sh
-
 # Build backend
 RUN cd backend && npm run build
 RUN cd ..

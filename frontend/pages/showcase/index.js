@@ -121,7 +121,7 @@ export default function PageRenderer({ settings, posts }) {
         if (post.URL_Name) {
             qrUrl = (new URL('/posts/' + post.URL_Name, window.location.href)).toString()
         } else if(post.frame_uri) {
-            qrUrl = (new URL(frame_uri, window.location.href)).toString()
+            qrUrl = (new URL(post.frame_uri, window.location.href)).toString()
         }
     }
 

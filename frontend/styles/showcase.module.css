@@ -30,7 +30,25 @@
     font-size: 18px;
 }
 
+.qr {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    visibility: hidden;
+}
+
 @media (min-width: 1280px) {
+    .qr {
+        visibility: visible;
+    }
+
+    .showcase h1 {
+        font-size: 30px;
+    }
+    
+    .showcase p {
+        font-size: 12px;
+    }
     
 }
 
@@ -63,8 +81,3 @@
     transition-timing-function: linear!important;
 }
 
-.qr {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-}

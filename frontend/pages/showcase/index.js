@@ -141,10 +141,10 @@ export default function PageRenderer({ settings, posts }) {
         </div>
         {clientSide && <div className={styles.qr}>
             <QRCode
-                size={160}
+                size={200}
                 style={{ height: "auto", maxWidth: "100%", width: "100%" }}
                 value={qrUrl}
-                viewBox={`0 0 160 160`}
+                viewBox={`0 0 200 200`}
             />
         </div>}
         <ProgrssBar duration={endTime - startTime} key={startTime + ' ' + index} />

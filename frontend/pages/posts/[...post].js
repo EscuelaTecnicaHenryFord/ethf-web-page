@@ -28,11 +28,11 @@ export async function getStaticPaths(context) {
 
     return {
         paths: paths,
-        fallback: 'blocking', // false or 'blocking'
+        fallback: 'blocking',
     }
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps(context, hideIfHidden = true) {
     const path = context.params.post.join('/')
     const pageRes = await fetchAPI('/posts', {
         populate: {
@@ -59,7 +59,13 @@ export async function getStaticProps(context) {
             },
         },
     })
-    const page = pageRes.data[0] || {}
+
+    let page = pageRes.data[0] || {}
+
+    if(hideIfHidden && page.attributes?.hidden) {
+        page = {}
+    }
+
 
     return {
         props: { ...page },

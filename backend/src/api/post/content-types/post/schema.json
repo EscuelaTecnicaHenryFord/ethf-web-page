@@ -76,6 +76,21 @@
       "relation": "manyToMany",
       "target": "api::category.category",
       "inversedBy": "posts"
+    },
+    "showcase_visible": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "hidden": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "showcase_delay": {
+      "type": "integer",
+      "default": 1,
+      "min": 1
     }
   }
 }

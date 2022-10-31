@@ -11,8 +11,6 @@ export default async function handler(req, res) {
 
     const base = 'henryford.edu.ar'
 
-    console.log()
-
     for (const { attributes: page } of pages.data) {
         // console.log(page)
         list.push({
@@ -27,7 +25,9 @@ export default async function handler(req, res) {
 
 
     for (const { attributes: page } of posts.data) {
-        // console.log(page)
+        if(page.hidden){
+            continue
+        }
         list.push({
             url: [
                 { loc: 'https://' + base + '/posts/' + page.URL_Name },

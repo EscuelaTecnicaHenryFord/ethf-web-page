@@ -120,13 +120,16 @@ export default function PageRenderer({ settings, posts }) {
     if (clientSide) {
         if (post.URL_Name) {
             qrUrl = (new URL('/posts/' + post.URL_Name, window.location.href)).toString()
-        } else if(post.frame_uri) {
+        } else if (post.frame_uri) {
             qrUrl = (new URL(post.frame_uri, window.location.href)).toString()
         }
     }
 
 
     return <div className={styles.showcase}>
+        <div className={styles.clock}>
+            <Clock />
+        </div>
         {!post.frame_uri ? <div className={styles.media}>
             <StrapiMedia src={media} muted autoPlay loop imageStyle={{
                 objectFit: 'cover'
@@ -135,6 +138,7 @@ export default function PageRenderer({ settings, posts }) {
             <iframe className={styles.frame} src={post.frame_uri}></iframe>
         }
         <div className={styles.info}>
+            <p className={styles.date}>{post.CreationDate}</p>
             <p>{pretitle}</p>
             <h1>{title}</h1>
             <p>{description}</p>
@@ -182,4 +186,59 @@ function shuffle(array) {
     }
 
     return array;
+}
+
+function Clock(props) {
+    const [time, setTime] = useState(null)
+
+    useEffect(() => {
+        setTime(new Date())
+        const timer = setInterval(() => {
+            setTime(new Date())
+        }, 500)
+
+        return () => clearInterval(timer)
+    }, [])
+
+    if (time == null) return ""
+
+    let seconds = time.getSeconds() + ''
+    let minutes = time.getMinutes() + ''
+    let hours = time.getHours() + ''
+    let date = time.getDate() + ''
+    let month = time.getMonth() + ''
+
+    if (seconds.length == 1) seconds = '0' + seconds
+    if (minutes.length == 1) minutes = '0' + minutes
+    if (hours.length == 1) hours = '0' + hours
+    if (date.length == 1) date = '0' + date
+    if (month.length == 1) month = '0' + month
+
+    const day = time.getDay()
+    const dayName = ([
+        'Lunes',
+        'Martes',
+        'Miércoles',
+        'Jueves',
+        'Viernes',
+        'Sábado',
+        'Domingo'
+    ])[day - 1]
+
+    const monthName = ([
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre'
+    ])[time.getMonth() - 1]
+
+    return <p>{dayName} {date} de {monthName.toLowerCase()} - {hours}:{minutes}:{seconds}</p>
 }

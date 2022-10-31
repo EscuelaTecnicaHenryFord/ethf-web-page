@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { fetchAPI } from "../../lib/api"
 import StrapiMedia from "../../lib/components/StrapiMedia"
 import styles from '../../styles/showcase.module.css'
+import QRCode from "react-qr-code";
 
 export async function getStaticProps(context, hideIfHidden = true) {
     const posts = (await fetchAPI('/posts', {
@@ -21,7 +22,7 @@ export async function getStaticProps(context, hideIfHidden = true) {
 
     posts.push(...showcasePosts)
 
-    if(settings.randomize) {
+    if (settings.randomize) {
         shuffle(posts)
     }
 
@@ -51,6 +52,11 @@ export default function PageRenderer({ settings, posts }) {
     const sortedPosts = useMemo(() => {
         return posts
     }, [posts])
+
+
+    const [clientSide, setClientSide] = useState(false)
+
+
 
     async function startLoop() {
         while (true) {
@@ -92,6 +98,7 @@ export default function PageRenderer({ settings, posts }) {
             loopStarted.current = true
             startLoop()
         }
+        setClientSide(true)
     }, [])
 
     if (!settings.enabled) return <h1>Showcase está desactivado</h1>
@@ -109,6 +116,16 @@ export default function PageRenderer({ settings, posts }) {
         </div>
     }
 
+    let qrUrl = "https://www.henryford.edu.ar"
+    if (clientSide) {
+        if (post.URL_Name) {
+            qrUrl = (new URL('/posts/' + post.URL_Name, window.location.href)).toString()
+        } else if(post.frame_uri) {
+            qrUrl = (new URL(frame_uri, window.location.href)).toString()
+        }
+    }
+
+
     return <div className={styles.showcase}>
         {!post.frame_uri ? <div className={styles.media}>
             <StrapiMedia src={media} muted autoPlay loop imageStyle={{
@@ -122,6 +139,14 @@ export default function PageRenderer({ settings, posts }) {
             <h1>{title}</h1>
             <p>{description}</p>
         </div>
+        {clientSide && <div className={styles.qr}>
+            <QRCode
+                size={160}
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                value={qrUrl}
+                viewBox={`0 0 160 160`}
+            />
+        </div>}
         <ProgrssBar duration={endTime - startTime} key={startTime + ' ' + index} />
     </div>
 }
@@ -142,19 +167,19 @@ function ProgrssBar({ duration }) {
 }
 
 function shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
-  
+    let currentIndex = array.length, randomIndex;
+
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
-  
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
     }
-  
+
     return array;
-  }
+}

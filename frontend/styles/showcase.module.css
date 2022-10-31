@@ -62,3 +62,9 @@
     background-color: rgb(0, 140, 255);
     transition-timing-function: linear!important;
 }
+
+.qr {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}

@@ -58,6 +58,9 @@
       "min": 0,
       "default": 1,
       "type": "integer"
+    },
+    "update": {
+      "type": "integer"
     }
   }
 }

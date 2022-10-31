@@ -36,11 +36,28 @@ async function delay(ms) {
     return new Promise((resolve, _) => setTimeout(() => resolve(), ms))
 }
 
+async function checkUpdate(updateRef) {
+    try {
+        const settings = (await fetchAPI('/showcase-control', {
+            pagination: { pageSize: 10000000, page: 1, },
+            populate: 'update',
+        })).data?.attributes
+
+
+        if (updateRef.current && settings.update && updateRef.current != settings.update) {
+            window.location.reload()
+        }
+    } catch (error) {
+        console.error(error)
+    }
+}
+
 export default function PageRenderer({ settings, posts }) {
 
     const [index, setIndex] = useState(0)
     const [showFrame, setShowFrame] = useState(false)
     const showFrameRef = useRef(showFrame)
+    const update = useRef(settings.update)
     showFrameRef.current = showFrame
 
     const indexRef = useRef(index)
@@ -60,6 +77,7 @@ export default function PageRenderer({ settings, posts }) {
 
     async function startLoop() {
         while (true) {
+            checkUpdate(update)
             if (!showFrameRef.current && settings.insert_frame_between_posts && indexRef.current % settings.posts_between_inserted_frame == 0) {
                 // Show frame
                 setShowFrame(true)
@@ -188,13 +206,22 @@ function shuffle(array) {
     return array;
 }
 
+function convertTZ(date, tzString) {
+    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", { timeZone: tzString }));
+}
+
 function Clock(props) {
     const [time, setTime] = useState(null)
 
+    function _time() {
+        const tz = 'America/Argentina/Buenos_Aires'
+        return convertTZ(new Date(), tz)
+    }
+
     useEffect(() => {
-        setTime(new Date())
+        setTime(_time())
         const timer = setInterval(() => {
-            setTime(new Date())
+            setTime(_time())
         }, 500)
 
         return () => clearInterval(timer)
@@ -240,5 +267,5 @@ function Clock(props) {
         'Diciembre'
     ])[time.getMonth() - 1]
 
-    return <p>{dayName} {date} de {monthName.toLowerCase()} - {hours}:{minutes}:{seconds}</p>
+    return <p>{dayName} {date} de {monthName?.toLowerCase()} - {hours}:{minutes}:{seconds}</p>
 }

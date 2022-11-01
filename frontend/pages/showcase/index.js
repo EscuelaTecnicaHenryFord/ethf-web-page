@@ -265,7 +265,7 @@ function Clock(props) {
         'Octubre',
         'Noviembre',
         'Diciembre'
-    ])[time.getMonth() - 1]
+    ])[time.getMonth()]
 
     return <p>{dayName} {date} de {monthName?.toLowerCase()} - {hours}:{minutes}:{seconds}</p>
 }

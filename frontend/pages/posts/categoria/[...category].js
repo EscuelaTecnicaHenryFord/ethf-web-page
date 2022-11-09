@@ -39,7 +39,7 @@ export async function getStaticProps(context) {
         filters: {
             slug: {
                 $eq: slug
-            }
+            },
         },
         pagination: {
             pageSize: 1,
@@ -48,7 +48,18 @@ export async function getStaticProps(context) {
     })
 
 
-    const posts = category?.data[0]?.attributes?.posts?.data
+    let posts = category?.data[0]?.attributes?.posts?.data
+
+    if(posts) {
+        posts = posts.sort((a, b) => {
+            const dateA = (new Date(a.attributes.CreationDate)).getTime()
+            const dateB = (new Date(b.attributes.CreationDate)).getTime()
+                        
+            if(dateA > dateB) return -1
+            if(dateA < dateB) return 1
+            return 0
+        })
+    }
 
     return {
         props: { posts: posts, category: category.data[0] || { attributes: null } },
@@ -83,7 +94,8 @@ export default function PostsPage({ posts, category: { attributes: category } })
                             title: post.attributes.Title,
                             media: post.attributes.Video_or_Image,
                             description: post.attributes.Subtitle,
-                            url: `/posts/${post.attributes.URL_Name}`
+                            url: `/posts/${post.attributes.URL_Name}`,
+                            date: post.attributes.CreationDate,
                         }
                     })}
                 />

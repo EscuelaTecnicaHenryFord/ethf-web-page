@@ -17,6 +17,9 @@ export default function LinkList({ links }) {
                         <h3>{link.title}</h3>
                         <p>{link.description}</p>
                     </div>
+                    {link.date && <div className={styles.date}>
+                        {link.date}
+                    </div>}
                 </div>
             </AutoLink>
         </div>

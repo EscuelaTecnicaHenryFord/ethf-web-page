@@ -2,13 +2,14 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import { Button } from "@/components/ui/button";
+import Navigation from "@/components/navigation";
 ---
 
 <Layout title="Welcome to Astro.">
 	<section class="w-full">
 		<header class="bg-white text-zinc-900 py-4 border-b">
 			<div class="container mx-auto px-4 md:px-6">
-				<nav class="flex items-center justify-between">
+				<!-- <nav class="flex items-center justify-between">
 					<div class="text-2xl font-bold">News Site</div>
 					<div class="space-x-4">
 						<Button>Test</Button>
@@ -31,7 +32,8 @@ import { Button } from "@/components/ui/button";
 							Sports
 						</a>
 					</div>
-				</nav>
+				</nav> -->
+				<Navigation client:load />
 			</div>
 		</header>
 		<main class="container mx-auto px-4 md:px-6 py-8">

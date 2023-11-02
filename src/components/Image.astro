@@ -1,0 +1,46 @@
+---
+import { cn } from "@/lib/utils";
+interface Props extends astroHTML.JSX.ImgHTMLAttributes {
+    collectionId?: string;
+    recordId?: string;
+    fileName?: string;
+}
+
+const { class: className, ...props} = Astro.props;
+
+const url =
+    props.collectionId && props.recordId && props.fileName
+        ? `http://localhost:8090/api/files/${props.collectionId}/${props.recordId}/${props.fileName}`
+        : props.src || "/placeholder.svg";
+
+// 100x0, 200x0, 300x0, 400x0, 500x0, 600x0, 700x0, 800x0, 900x0, 1280x0, 1920x0
+
+const srcset = `
+${url}?thumb=100x0 100w,
+${url}?thumb=600x0 600w,
+${url}?thumb=500x0 500w,
+${url}?thumb=800x0 800w,
+${url}?thumb=900x0 900w,
+${url}?thumb=1280x0 1280w,
+${url}?thumb=1920x0 1920w
+`;
+// src={url || props.src || "/placeholder.svg"}
+---
+
+<img
+    alt="Top Story Image"
+    height="400"
+    srcset={srcset}
+    onerror="this.src='/placeholder.svg'"
+    onload="this.classList.remove('animate-pulse')"
+    style={{
+        aspectRatio: "600/400",
+        objectFit: "cover",
+    }}
+    width="600"
+    {...props}
+    class={cn(
+        "w-full h-64 object-cover object-center animate-pulse",
+        className,
+    )}
+/>

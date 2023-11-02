@@ -2,81 +2,79 @@
 import Layout from "../layouts/Layout.astro";
 import Card from "../components/Card.astro";
 import { Button } from "@/components/ui/button";
-import Navigation from "@/components/navigation";
+import Header from "@/components/Header.astro";
+import Image from "@/components/Image.astro";
+import { currentPage } from "@/lib/data";
+import { convert } from "html-to-text";
+import { cn } from "@/lib/utils";
+
+const page = (await currentPage(Astro))!;
+const plainDescription = convert(page?.description ?? "");
+console.log(page);
 ---
 
 <Layout title="Welcome to Astro.">
 	<section class="w-full">
-		<header class="bg-white text-zinc-900 py-4 border-b">
-			<div class="container mx-auto px-4 md:px-6">
-				<!-- <nav class="flex items-center justify-between">
-					<div class="text-2xl font-bold">News Site</div>
-					<div class="space-x-4">
-						<Button>Test</Button>
-						<a class="text-zinc-900 hover:text-zinc-700" href="#">
-							Home
-						</a>
-						<a class="text-zinc-900 hover:text-zinc-700" href="#">
-							Politics
-						</a>
-						<a class="text-zinc-900 hover:text-zinc-700" href="#">
-							Business
-						</a>
-						<a class="text-zinc-900 hover:text-zinc-700" href="#">
-							Tech
-						</a>
-						<a class="text-zinc-900 hover:text-zinc-700" href="#">
-							Culture
-						</a>
-						<a class="text-zinc-900 hover:text-zinc-700" href="#">
-							Sports
-						</a>
-					</div>
-				</nav> -->
-				<Navigation client:load />
-			</div>
-		</header>
-		<main class="container mx-auto px-4 md:px-6 py-8">
+		<Header />
+		<main class="container mx-auto px-0 sm:px-4 md:px-6 sm:py-8">
 			<section class="mb-8">
-				<h2 class="text-2xl font-bold mb-4">Top Story</h2>
+				<!-- <h2 class="text-2xl font-bold mb-4 px-2 sm:px-0">Principal</h2> -->
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div>
-						<img
-							alt="Top Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
-							height="400"
-							src="/placeholder.svg"
-							style={{
-								aspectRatio: "600/400",
-								objectFit: "cover",
-							}}
-							width="600"
+						<Image
+							class={"sm:rounded-lg"}
+							collectionId={page.collectionId}
+							recordId={page.id}
+							fileName={page.presentation}
 						/>
 					</div>
 					<div class="flex flex-col justify-center">
 						<h3 class="text-xl font-bold mb-2">
-							Top Story Headline
+							{page.title}
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
-							This is a brief summary of the top story. Click the
-							a to read more.
-						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
+						<div
+							class={cn(
+								"text-zinc-500 dark:text-zinc-400 overflow-hidden text-ellipsis",
+								{
+									"md:line-clamp-4":
+										page.expand.actions.length > 2,
+									"md:line-clamp-9":
+										page.expand.actions.length > 0 &&
+										page.expand.actions.length < 3,
+								},
+							)}
 						>
-							Read More
-						</a>
+							<p set:html={page?.description} />
+						</div>
+						<div
+							class="grid grid-cols-2 lg:max-w-[600px] gap-2 md:gap-4 pt-2 mt-auto"
+						>
+							{
+								page.expand.actions.map((action) => {
+									return (
+										<a href={action.link} role="button">
+											<Button
+												className="w-full py-6"
+												variant={action.button_style}
+												role="contentinfo"
+											>
+												{action.title}
+											</Button>
+										</a>
+									);
+								})
+							}
+						</div>
 					</div>
 				</div>
 			</section>
 			<section class="mb-8">
-				<h2 class="text-2xl font-bold mb-4">Politics</h2>
+				<h2 class="text-2xl font-bold mb-4 px-2 sm:px-0">Politics</h2>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<div>
-						<img
+						<Image
 							alt="Politics Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -85,24 +83,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Politics Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the politics story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Politics Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -111,24 +105,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Politics Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the politics story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Politics Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -137,29 +127,25 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Politics Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the politics story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 				</div>
 			</section>
 			<section class="mb-8">
-				<h2 class="text-2xl font-bold mb-4">Business</h2>
+				<h2 class="text-2xl font-bold mb-4 px-2 sm:px-0">Business</h2>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<div>
-						<img
+						<Image
 							alt="Business Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -168,24 +154,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Business Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the business story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Business Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -194,24 +176,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Business Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the business story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Business Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -220,29 +198,25 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Business Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the business story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 				</div>
 			</section>
 			<section class="mb-8">
-				<h2 class="text-2xl font-bold mb-4">Tech</h2>
+				<h2 class="text-2xl font-bold mb-4 px-2 sm:px-0">Tech</h2>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<div>
-						<img
+						<Image
 							alt="Tech Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -251,24 +225,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Tech Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the tech story. Click the
 							a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Tech Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -277,24 +247,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Tech Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the tech story. Click the
 							a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Tech Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -303,29 +269,25 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Tech Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the tech story. Click the
 							a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 				</div>
 			</section>
 			<section class="mb-8">
-				<h2 class="text-2xl font-bold mb-4">Culture</h2>
+				<h2 class="text-2xl font-bold mb-4 px-2 sm:px-0">Culture</h2>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<div>
-						<img
+						<Image
 							alt="Culture Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -334,24 +296,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Culture Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the culture story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Culture Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -360,24 +318,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Culture Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the culture story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Culture Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -386,29 +340,25 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Culture Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the culture story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 				</div>
 			</section>
 			<section class="mb-8">
-				<h2 class="text-2xl font-bold mb-4">Sports</h2>
+				<h2 class="text-2xl font-bold mb-4 px-2 sm:px-0">Sports</h2>
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 					<div>
-						<img
+						<Image
 							alt="Sports Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -417,24 +367,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Sports Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the sports story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Sports Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -443,24 +389,20 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Sports Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the sports story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 					<div>
-						<img
+						<Image
 							alt="Sports Story Image"
-							class="w-full h-64 object-cover object-center rounded-lg"
+							class="w-full h-64 object-cover object-center sm:rounded-lg"
 							height="400"
 							src="/placeholder.svg"
 							style={{
@@ -469,19 +411,15 @@ import Navigation from "@/components/navigation";
 							}}
 							width="600"
 						/>
-						<h3 class="text-xl font-bold mb-2 mt-4">
+						<h3 class="text-xl font-bold mb-2 mt-4 px-2 sm:px-0">
 							Sports Story Headline
 						</h3>
-						<p class="text-zinc-500 dark:text-zinc-400">
+						<p
+							class="text-zinc-500 dark:text-zinc-400 px-2 sm:px-0"
+						>
 							This is a brief summary of the sports story. Click
 							the a to read more.
 						</p>
-						<a
-							class="text-blue-500 hover:text-blue-700 mt-4"
-							href="#"
-						>
-							Read More
-						</a>
 					</div>
 				</div>
 			</section>

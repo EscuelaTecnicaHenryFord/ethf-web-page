@@ -1,0 +1,16 @@
+---
+    interface Props {
+        link: string;
+        titulo?: string;
+        donde?: 'nueva-pestaña'
+        icono?: string
+    }
+
+    const { link, titulo, donde, icono } = Astro.props;
+---
+
+<li>
+    <a href={link} title={titulo} target={donde==='nueva-pestaña' ? '_blank' : undefined}>
+        <slot />
+    </a>
+</li>

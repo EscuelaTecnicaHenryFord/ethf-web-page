@@ -1,16 +1,26 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/Hero.astro";
+import HeroLink from "../components/HeroLink.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Escuela Técnica Henry Ford</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+	<Hero slot="header" title="Escuela Técnica Henry Ford" description="Educación de excelencia, especialización electromecánica">
+		<HeroLink href="/ingreso">
+			<p>Ingreso</p>
+			<span>A primer año</span>
+		</HeroLink>
+		<HeroLink href="/ingreso">
+			<p>Galería</p>
+			<span>Fotos y videos</span>
+		</HeroLink>
+		<HeroLink href="/ingreso">
+			<p>Galería</p>
+			<span>Fotos y videos</span>
+		</HeroLink>
+		<HeroLink href="/ingreso">
+			<p>Galería</p>
+			<span>Fotos y videos</span>
+		</HeroLink>
+	</Hero>
+</Layout>

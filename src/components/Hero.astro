@@ -1,0 +1,107 @@
+---
+import { Image } from "astro:assets";
+
+import portada from "../assets/portada.webp";
+
+export type Props = {
+    title?: string;
+    description?: string;
+};
+
+const { title, description } = Astro.props;
+---
+
+<style>
+    .hero {
+        min-height: 100vh;
+        position: relative;
+    }
+
+    .hero > img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.35);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+        padding: 20px;
+        padding-top: 180px;
+    }
+
+    .overlay h1 {
+        text-align: center;
+        text-wrap: balance;
+        font-weight: 500;
+        font-size: 30px;
+    }
+
+    .description {
+        text-wrap: balance;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .hero-grid {
+        width: 100%;
+        padding: 20px 0;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 1fr;
+    }
+
+    @media screen and (min-width: 768px) {
+        .overlay {
+            padding-top: 20px;
+            justify-content: center;
+        }
+
+        .hero-grid {
+            max-width: 800px;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .overlay h1 {
+            font-size: 40px;
+        }
+
+        .description {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<style is:global>
+    /* OCULAR EL ÚLTIMO LINK SI SON IMPARES EN PC O TABLET */
+    @media screen and (min-width: 768px) {
+        .hero-grid > *:nth-child(2n + 1):last-child {
+            display: none;
+        }
+    }
+</style>
+
+<header class="hero">
+    <Image src={portada} alt="Frente de la escuela" />
+    <div class="overlay">
+        <div>
+            {title ? <h1>{title}</h1> : <slot name="title" />}
+        </div>
+        <div class="description">
+            {description ? <p>{description}</p> : <slot name="description" />}
+        </div>
+        <div class="hero-grid">
+            <slot />
+        </div>
+    </div>
+</header>

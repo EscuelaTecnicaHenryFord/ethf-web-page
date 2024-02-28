@@ -1,0 +1,54 @@
+---
+export type Props = {
+	title?: string;
+};
+
+const { title } = Astro.props;
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title || "Escuela Técnica Henry Ford"}</title>
+	</head>
+	<body>
+		<style is:global>
+			img {
+				width: 100%;
+				object-fit: cover;
+			}
+
+			.container {
+				width: 100%;
+				padding: 20px;
+				margin: 0 auto;
+			}
+
+			@media screen and (min-width: 768px) {
+				.container {
+					width: 90%;
+				}
+			}
+
+			@media screen and (min-width: 1280px) {
+				.container {
+					width: 85%;
+				}
+			}
+		</style>
+
+		<!-- Acá va el headero "hero". Se usa como <Hero slot="header" /> -->
+		<slot name="header" />
+		<!-- espacio entre elementos de 5, margen arriba de -100px, padding arriba de 120px, padding abajo de 5 (20px) -->
+		<main
+			class="space-y-5 mt-[-100px] pt-[100px] pb-5"
+		>
+			<div class="container">
+				<slot />
+			</div>
+		</main>
+	</body>
+</html>
